@@ -1,1 +1,479 @@
-coming soon
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Coming Soon — Launching December 3</title>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.10);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --accent: 209 85% 55%;
+            --glass-radius: 18px;
+        }
+
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color: #fff
+        }
+
+
+        .bg-video-wrap {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden
+        }
+
+        .bg-video-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(7, 10, 19, 0.25), rgba(7, 10, 19, 0.55));
+            mix-blend-mode: normal;
+            z-index: 0
+        }
+
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem
+        }
+
+        .card {
+            width: min(960px, 96%);
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 2rem;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+            border-radius: var(--glass-radius);
+            padding: 2.25rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+            backdrop-filter: blur(10px) saturate(130%);
+            -webkit-backdrop-filter: blur(10px) saturate(130%);
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 30%, rgba(255, 255, 255, 0.025));
+            transform: translateX(-30%);
+            filter: blur(18px);
+            opacity: .6;
+            pointer-events: none
+        }
+
+        .left {
+            padding: 1rem 0
+        }
+
+        .right {
+            padding: 1rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border-radius: 12px
+        }
+
+        h1 {
+            margin: 0 0 .35rem;
+            font-size: clamp(1.4rem, 3.6vw, 2.2rem);
+            line-height: 1.02;
+            font-weight: 800;
+            letter-spacing: -0.02em
+        }
+
+        p.lead {
+            margin: 0 0 1rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400
+        }
+
+        .countdown {
+            display: flex;
+            gap: 1rem;
+            margin-top: .75rem
+        }
+
+        .countdown .unit {
+            min-width: 70px;
+            padding: .6rem .7rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center
+        }
+
+        .countdown .num {
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1
+        }
+
+        .countdown .label {
+            font-size: .72rem;
+            color: rgba(255, 255, 255, 0.7)
+        }
+
+        /* Subscribe form */
+        form.subscribe {
+            display: flex;
+            flex-direction: column;
+            gap: .8rem
+        }
+
+        .input-row {
+            display: flex;
+            gap: .6rem
+        }
+
+        input[type="email"] {
+            flex: 1;
+            padding: .7rem .9rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            color: inherit;
+            font-weight: 500;
+            outline: none
+        }
+
+        input[type="email"]:focus {
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
+        }
+
+        button.btn {
+            padding: .7rem .95rem;
+            border-radius: 10px;
+            border: 0;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, hsl(var(--accent) / 0.95), hsl(var(--accent) / 0.78));
+            color: #06101a;
+            transition: transform .18s ease, box-shadow .18s ease
+        }
+
+        button.btn:active {
+            transform: translateY(1px)
+        }
+
+        .small {
+            font-size: .86rem;
+            color: rgba(255, 255, 255, 0.75)
+        }
+
+
+        .foot-note {
+            position: absolute;
+            left: 1.25rem;
+            bottom: 1rem;
+            font-size: .78rem;
+            color: rgba(255, 255, 255, 0.55)
+        }
+
+
+        @media (max-width:880px) {
+            .container {
+                padding: 1.5rem
+            }
+
+            .card {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 1.5rem
+            }
+
+            .right {
+                order: -1;
+                margin-top: 0
+            }
+
+            h1 {
+                font-size: 1.6rem
+            }
+
+            p.lead {
+                font-size: 0.95rem
+            }
+
+            .countdown {
+                flex-wrap: wrap;
+                gap: 0.7rem
+            }
+
+            .countdown .unit {
+                min-width: 58px;
+                padding: 0.5rem
+            }
+
+            .countdown .num {
+                font-size: 1.25rem
+            }
+
+            .countdown .label {
+                font-size: 0.68rem
+            }
+
+            .input-row {
+                flex-direction: column
+            }
+
+            button.btn {
+                width: 100%
+            }
+
+            input[type="email"] {
+                width: 100%
+            }
+        }
+
+        .logo-area {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+        }
+
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 40, 0, 0.25);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bg-overlay {
+            background: linear-gradient(180deg, rgba(0, 60, 0, 0.35), rgba(0, 20, 0, 0.65));
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(0, 50, 0, 0.25), rgba(0, 30, 0, 0.15));
+            border: 1px solid rgba(0, 120, 0, 0.25);
+        }
+
+        .right {
+            background: linear-gradient(180deg, rgba(0, 50, 0, 0.18), rgba(0, 30, 0, 0.1));
+        }
+
+        button.btn {
+            background: linear-gradient(135deg, hsl(140 70% 45% / 0.95), hsl(140 70% 40% / 0.85));
+            color: #031a06;
+        }
+
+        /* Jungle themed text accents */
+        h1,
+        h2 {
+            color: #d4f8d0;
+        }
+
+        p.lead,
+        .small,
+        .countdown .label {
+            color: rgba(220, 255, 220, 0.8)
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-video-wrap" aria-hidden="true">
+
+        <video autoplay muted loop playsinline
+            poster="https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg">
+            <source src="https://www.pexels.com/download/video/2022395/" type="video/mp4">
+
+
+        </video>
+    </div>
+    <div class="bg-overlay"></div>
+
+    <main class="container" role="main">
+        <div class="logo-area">
+
+            <img src="assets/logo.png" alt="Logo" class="logo-img" />
+        </div>
+        <section class="card" aria-labelledby="coming-soon-heading">
+            <div class="left">
+                <h1 id="coming-soon-heading">We're launching soon</h1>
+                <p class="lead">Polished, modern product — built for people who value speed and clarity. We're putting
+                    the finishing touches on everything.</p>
+
+                <div class="countdown" role="timer" aria-live="polite" aria-atomic="true" id="countdown">
+                    <div class="unit">
+                        <div class="num" id="days">--</div>
+                        <div class="label">Days</div>
+                    </div>
+                    <div class="unit">
+                        <div class="num" id="hours">--</div>
+                        <div class="label">Hours</div>
+                    </div>
+                    <div class="unit">
+                        <div class="num" id="minutes">--</div>
+                        <div class="label">Minutes</div>
+                    </div>
+                    <div class="unit">
+                        <div class="num" id="seconds">--</div>
+                        <div class="label">Seconds</div>
+                    </div>
+                </div>
+
+                <p class="small" id="target-date-note">Target: <span id="target-date-text">December 3</span></p>
+            </div>
+
+            <aside class="right" aria-labelledby="subscribe-heading">
+                <h2 id="subscribe-heading" style="margin:0 0 .4rem">Get notified</h2>
+                <p class="small" style="margin:0 0 .6rem">Leave your email and we'll send you a heads-up when we go
+                    live.</p>
+
+                <form class="subscribe" id="subscribe-form" novalidate>
+                    <label for="email" class="visually-hidden">Email address</label>
+                    <div class="input-row">
+                        <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+                            placeholder="you@domain.com" required aria-required="true">
+                        <button class="btn" type="submit">Notify me</button>
+                    </div>
+                    <div id="form-msg" role="status" aria-live="polite" style="min-height:1.2em;font-size:.9rem"></div>
+                </form>
+
+                <div style="margin-top:1rem;font-size:.85rem;color:rgba(255,255,255,0.65)">Or follow us on
+                    <strong>Twitter</strong> for updates.</div>
+            </aside>
+
+            <div class="foot-note">Made with care • Minimal &amp; modern</div>
+        </section>
+    </main>
+
+    <script>
+        // --- Countdown logic ---
+        (function () {
+            const daysEl = document.getElementById('days');
+            const hrsEl = document.getElementById('hours');
+            const minEl = document.getElementById('minutes');
+            const secEl = document.getElementById('seconds');
+            const targetText = document.getElementById('target-date-text');
+
+
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let targetYear = currentYear;
+            // month in JS Date is 0-indexed: 11 = December
+            let target = new Date(targetYear, 11, 3, 0, 0, 0);
+            if (now >= target) {
+                targetYear = currentYear + 1;
+                target = new Date(targetYear, 11, 3, 0, 0, 0);
+            }
+
+            function pad(n) { return String(n).padStart(2, '0') }
+            function updateCountdown() {
+                const t = new Date() - target;
+                const diff = target - new Date();
+                if (diff <= 0) {
+                    daysEl.textContent = '00'; hrsEl.textContent = '00'; minEl.textContent = '00'; secEl.textContent = '00';
+                    document.getElementById('countdown').setAttribute('aria-hidden', 'true');
+                    document.getElementById('target-date-note').textContent = 'We are live!';
+                    clearInterval(timer);
+                    return;
+                }
+                let s = Math.floor(diff / 1000);
+                const days = Math.floor(s / 86400); s -= days * 86400;
+                const hours = Math.floor(s / 3600); s -= hours * 3600;
+                const mins = Math.floor(s / 60); s -= mins * 60;
+                const secs = s;
+                daysEl.textContent = pad(days);
+                hrsEl.textContent = pad(hours);
+                minEl.textContent = pad(mins);
+                secEl.textContent = pad(secs);
+            }
+
+
+            targetText.textContent = target.toLocaleString(undefined, { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+            updateCountdown();
+            const timer = setInterval(updateCountdown, 1000);
+
+        })();
+
+
+        (function () {
+            const form = document.getElementById('subscribe-form');
+            const email = document.getElementById('email');
+            const msg = document.getElementById('form-msg');
+
+            function validEmail(e) {
+
+                return /\S+@\S+\.\S+/.test(e);
+            }
+
+            form.addEventListener('submit', function (ev) {
+                ev.preventDefault();
+                const val = email.value.trim();
+                msg.textContent = '';
+                if (!val) {
+                    msg.style.color = 'rgb(255,210,210)';
+                    msg.textContent = 'Please enter your email.';
+                    email.focus();
+                    return;
+                }
+                if (!validEmail(val)) {
+                    msg.style.color = 'rgb(255,210,210)';
+                    msg.textContent = 'Please provide a valid email address.';
+                    email.focus();
+                    return;
+                }
+
+                msg.style.color = 'white';
+                msg.textContent = 'Thanks — you\'re on the list!';
+                form.reset();
+
+
+            });
+
+        })();
+
+
+        (function () {
+            const style = document.createElement('style');
+            style.textContent = `
+        .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+      `;
+            document.head.appendChild(style);
+        })();
+
+    </script>
+</body>
+
+</html>
