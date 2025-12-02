@@ -1,309 +1,545 @@
 <!doctype html>
-
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Coming Soon — Launching December 3</title>
-
+    <title>Jungle Paradise — Launching Soon</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Eater&family=Geist:wght@100..900&family=Sora:wght@100..800&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.10);
-            --glass-border: rgba(255, 255, 255, 0.18);
-            --accent: 209 85% 55%;
-            --glass-radius: 18px;
+            --jungle-green: 140 50% 20%;
+            --jungle-light: 120 40% 30%;
+            --jungle-accent: 85 70% 45%;
+            --jungle-dark: 120 60% 10%;
+            --glass-bg: rgba(0, 40, 0, 0.15);
+            --glass-border: rgba(100, 200, 100, 0.2);
+            --glass-radius: 20px;
         }
 
-
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         html,
         body {
             height: 100%;
-            margin: 0;
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            color: #fff
+            font-family: 'Inter', system-ui, sans-serif;
+            color: #f0ffe0;
         }
 
 
         .bg-video-wrap {
             position: fixed;
             inset: 0;
-            z-index: -1;
-            overflow: hidden
+            z-index: -2;
+            overflow: hidden;
         }
 
         .bg-video-wrap video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block
+            display: block;
+            filter: brightness(0.7) contrast(1.1) hue-rotate(10deg);
         }
 
-        .bg-overlay {
+
+        .jungle-overlay {
             position: fixed;
             inset: 0;
-            background: linear-gradient(180deg, rgba(7, 10, 19, 0.25), rgba(7, 10, 19, 0.55));
-            mix-blend-mode: normal;
-            z-index: 0
+            background:
+                radial-gradient(circle at 20% 80%, rgba(0, 80, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 60, 0, 0.4) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(0, 30, 0, 0.4) 0%, rgba(0, 50, 0, 0.6) 100%);
+            z-index: -1;
+        }
+
+
+        .jungle-pattern {
+            position: fixed;
+            inset: 0;
+            background-image:
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,30 Q40,10 60,30 T100,30" fill="none" stroke="rgba(100,255,100,0.05)" stroke-width="2"/><path d="M30,60 Q50,40 70,60 T100,60" fill="none" stroke="rgba(100,255,100,0.05)" stroke-width="2"/></svg>'),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><path d="M50,150 Q100,100 150,150" fill="none" stroke="rgba(50,200,50,0.03)" stroke-width="3"/></svg>');
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        /* Floating leaves animation */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        .floating-leaves {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .leaf {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .leaf:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .leaf:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .leaf:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        .leaf:nth-child(4) {
+            bottom: 20%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+
+        .leaf:nth-child(5) {
+            top: 40%;
+            left: 80%;
+            animation-delay: 4s;
         }
 
 
         .container {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 3rem
+            padding: 2rem;
+            position: relative;
         }
+
+
+        .logo-container {
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-wrapper {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            height: 80px;
+            width: auto;
+            filter:
+                drop-shadow(0 4px 12px rgba(0, 40, 0, 0.6)) drop-shadow(0 0 20px rgba(100, 255, 100, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+
+
+        .logo-text {
+            font-family: "Eater", serif;
+
+            font-style: normal;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #b8ffa0;
+            text-shadow:
+                0 2px 4px rgba(0, 40, 0, 0.5),
+                0 0 10px rgba(100, 255, 100, 0.3);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-subtext {
+            font-family: "Sora", sans-serif;
+            font-optical-sizing: auto;
+            font-size: 0.9rem;
+            color: rgba(200, 255, 200, 0.8);
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
 
         .card {
             width: min(960px, 96%);
             display: grid;
             grid-template-columns: 1fr 360px;
-            gap: 2rem;
+            gap: 3rem;
             align-items: center;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+            background: linear-gradient(135deg,
+                    rgba(0, 60, 0, 0.25) 0%,
+                    rgba(0, 40, 0, 0.15) 100%);
             border-radius: var(--glass-radius);
-            padding: 2.25rem;
+            padding: 2.5rem;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
-            backdrop-filter: blur(10px) saturate(130%);
-            -webkit-backdrop-filter: blur(10px) saturate(130%);
+            box-shadow:
+                0 20px 40px rgba(0, 40, 0, 0.4),
+                0 0 60px rgba(0, 80, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px) saturate(160%);
+            -webkit-backdrop-filter: blur(15px) saturate(160%);
             position: relative;
             overflow: hidden;
         }
 
-
+        /* Jungle vine border effect */
         .card::before {
             content: "";
             position: absolute;
-            inset: -2px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 30%, rgba(255, 255, 255, 0.025));
-            transform: translateX(-30%);
-            filter: blur(18px);
-            opacity: .6;
-            pointer-events: none
+            inset: 0;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(100, 255, 100, 0.1) 50%,
+                    transparent 70%);
+            animation: shine 3s infinite linear;
+            pointer-events: none;
         }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
 
         .left {
-            padding: 1rem 0
-        }
-
-        .right {
-            padding: 1rem;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-            border-radius: 12px
+            padding: 1rem 0;
         }
 
         h1 {
-            margin: 0 0 .35rem;
-            font-size: clamp(1.4rem, 3.6vw, 2.2rem);
-            line-height: 1.02;
-            font-weight: 800;
-            letter-spacing: -0.02em
+            margin: 0 0 1rem;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-family: "Eater", serif;
+            font-style: normal;
+            font-weight: 900;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #b8ffa0, #6aff6a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 40, 0, 0.3);
         }
 
         p.lead {
-            margin: 0 0 1rem;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 400
+            margin: 0 0 2rem;
+            color: rgba(220, 255, 220, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 400;
+            font-family: "Eater", serif;
+            font-style: normal;
         }
+
+        p {
+            font-family: "Eater", serif;
+            font-style: normal;
+        }
+
 
         .countdown {
             display: flex;
             gap: 1rem;
-            margin-top: .75rem
+            margin: 2rem 0;
         }
 
         .countdown .unit {
-            min-width: 70px;
-            padding: .6rem .7rem;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            flex: 1;
+            min-width: 80px;
+            padding: 1rem 0.5rem;
+            background: linear-gradient(180deg,
+                    rgba(0, 60, 0, 0.3) 0%,
+                    rgba(0, 40, 0, 0.2) 100%);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            text-align: center
+            border: 1px solid rgba(100, 200, 100, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .countdown .unit::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(100, 255, 100, 0.1) 50%,
+                    transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .countdown .unit:hover::before {
+            opacity: 1;
         }
 
         .countdown .num {
-            font-size: 1.45rem;
-            font-weight: 700;
-            line-height: 1
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: "Eater", serif;
+            font-style: normal;
+            color: #b8ffa0;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+            text-shadow: 0 0 10px rgba(100, 255, 100, 0.3);
         }
 
         .countdown .label {
-            font-size: .72rem;
-            color: rgba(255, 255, 255, 0.7)
+            font-size: 0.8rem;
+            color: rgba(200, 255, 200, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: "Eater", serif;
+            font-style: normal;
         }
 
-        /* Subscribe form */
+        /* Right section */
+        .right {
+            padding: 2rem;
+            background: linear-gradient(135deg,
+                    rgba(0, 50, 0, 0.2) 0%,
+                    rgba(0, 30, 0, 0.15) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(100, 200, 100, 0.2);
+            position: relative;
+        }
+
+        .right::after {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg,
+                    rgba(100, 255, 100, 0.2),
+                    rgba(0, 255, 150, 0.1),
+                    rgba(100, 255, 100, 0.2));
+            border-radius: 18px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        h2 {
+            margin: 0 0 1rem;
+            font-family: "Eater", serif;
+            font-style: normal;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #b8ffa0;
+        }
+
+        /* Form styling */
         form.subscribe {
             display: flex;
             flex-direction: column;
-            gap: .8rem
+            gap: 1rem;
         }
 
         .input-row {
             display: flex;
-            gap: .6rem
+            gap: 0.75rem;
         }
 
         input[type="email"] {
             flex: 1;
-            padding: .7rem .9rem;
+            padding: 0.9rem 1rem;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.02);
-            color: inherit;
+            border: 1px solid rgba(100, 200, 100, 0.3);
+            background: rgba(0, 40, 0, 0.3);
+            color: #f0ffe0;
             font-weight: 500;
-            outline: none
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: "Eater", serif;
+            font-style: normal;
         }
 
         input[type="email"]:focus {
-            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
+            border-color: hsl(var(--jungle-accent));
+            box-shadow:
+                0 0 20px rgba(100, 255, 100, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         button.btn {
-            padding: .7rem .95rem;
+            padding: 0.9rem 1.5rem;
             border-radius: 10px;
-            border: 0;
+            border: none;
             font-weight: 700;
             cursor: pointer;
-            background: linear-gradient(135deg, hsl(var(--accent) / 0.95), hsl(var(--accent) / 0.78));
-            color: #06101a;
-            transition: transform .18s ease, box-shadow .18s ease
+            background: linear-gradient(135deg,
+                    hsl(85, 70%, 45%) 0%,
+                    hsl(120, 70%, 40%) 100%);
+            color: #031a06;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: "Eater", serif;
+            font-style: normal;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button.btn:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 10px 20px rgba(0, 60, 0, 0.4),
+                0 0 30px rgba(100, 255, 100, 0.4);
         }
 
         button.btn:active {
-            transform: translateY(1px)
-        }
-
-        .small {
-            font-size: .86rem;
-            color: rgba(255, 255, 255, 0.75)
+            transform: translateY(0);
         }
 
 
         .foot-note {
             position: absolute;
-            left: 1.25rem;
-            bottom: 1rem;
-            font-size: .78rem;
-            color: rgba(255, 255, 255, 0.55)
+            left: 50%;
+            bottom: 1.5rem;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: rgba(200, 255, 200, 0.6);
+            text-align: center;
+            width: 100%;
+            text-shadow: 0 1px 2px rgba(0, 40, 0, 0.5);
         }
 
 
-        @media (max-width:880px) {
+        @media (max-width: 880px) {
             .container {
-                padding: 1.5rem
+                padding: 1rem;
+            }
+
+            .logo-container {
+                margin-bottom: 2rem;
+            }
+
+            .logo-img {
+                height: 60px;
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
             }
 
             .card {
                 grid-template-columns: 1fr;
                 padding: 1.5rem;
-                gap: 1.5rem
+                gap: 2rem;
             }
 
             .right {
                 order: -1;
-                margin-top: 0
             }
 
             h1 {
-                font-size: 1.6rem
-            }
-
-            p.lead {
-                font-size: 0.95rem
+                font-size: 1.8rem;
             }
 
             .countdown {
                 flex-wrap: wrap;
-                gap: 0.7rem
+                gap: 0.5rem;
             }
 
             .countdown .unit {
-                min-width: 58px;
-                padding: 0.5rem
-            }
-
-            .countdown .num {
-                font-size: 1.25rem
-            }
-
-            .countdown .label {
-                font-size: 0.68rem
+                min-width: calc(50% - 0.5rem);
             }
 
             .input-row {
-                flex-direction: column
+                flex-direction: column;
             }
 
             button.btn {
-                width: 100%
-            }
-
-            input[type="email"] {
-                width: 100%
+                width: 100%;
             }
         }
 
-        .logo-area {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
+        /* Accessibility */
+        .visually-hidden {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+            white-space: nowrap;
         }
 
-        .logo-img {
-            height: 60px;
-            width: auto;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+        /* Decorative animal icons */
+        .animal-icon {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0.1;
+            z-index: -1;
         }
 
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 40, 0, 0.25);
-            pointer-events: none;
-            z-index: 1;
+        .monkey {
+            top: 10%;
+            right: 10%;
         }
 
-        .bg-overlay {
-            background: linear-gradient(180deg, rgba(0, 60, 0, 0.35), rgba(0, 20, 0, 0.65));
+        .parrot {
+            bottom: 20%;
+            left: 5%;
         }
 
-        .card {
-            background: linear-gradient(180deg, rgba(0, 50, 0, 0.25), rgba(0, 30, 0, 0.15));
-            border: 1px solid rgba(0, 120, 0, 0.25);
-        }
-
-        .right {
-            background: linear-gradient(180deg, rgba(0, 50, 0, 0.18), rgba(0, 30, 0, 0.1));
-        }
-
-        button.btn {
-            background: linear-gradient(135deg, hsl(140 70% 45% / 0.95), hsl(140 70% 40% / 0.85));
-            color: #031a06;
-        }
-
-        /* Jungle themed text accents */
-        h1,
-        h2 {
-            color: #d4f8d0;
-        }
-
-        p.lead,
-        .small,
-        .countdown .label {
-            color: rgba(220, 255, 220, 0.8)
+        .tiger {
+            top: 20%;
+            left: 10%;
         }
     </style>
 </head>
@@ -311,26 +547,42 @@
 <body>
 
     <div class="bg-video-wrap" aria-hidden="true">
-
-        <video autoplay muted loop playsinline
-            poster="https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg">
+        <video autoplay muted loop playsinline>
             <source src="https://www.pexels.com/download/video/2022395/" type="video/mp4">
-
-
         </video>
     </div>
-    <div class="bg-overlay"></div>
+
+    <div class="jungle-overlay"></div>
+    <div class="jungle-pattern"></div>
+
+    <div class="floating-leaves">
+        <div class="leaf">🍃</div>
+        <div class="leaf">🌿</div>
+        <div class="leaf">🍂</div>
+        <div class="leaf">🌱</div>
+        <div class="leaf">🍃</div>
+    </div>
 
     <main class="container" role="main">
-        <div class="logo-area">
-
-            <img src="assets/logo.png" alt="Logo" class="logo-img" />
+        <!-- Logo Area - Now properly aligned -->
+        <div class="logo-container">
+            <div class="logo-wrapper">
+                <img src="assets/logo.png" alt="Jungle Paradise Logo" class="logo-img" />
+                <div>
+                    <div class="logo-text">Jungle Paradise</div>
+                    <div class="logo-subtext">WILD PARADISE AWAITS</div>
+                </div>
+            </div>
         </div>
+
         <section class="card" aria-labelledby="coming-soon-heading">
             <div class="left">
-                <h1 id="coming-soon-heading">We're launching soon</h1>
-                <p class="lead">Polished, modern product — built for people who value speed and clarity. We're putting
-                    the finishing touches on everything.</p>
+                <h1 id="coming-soon-heading">The Jungle Awakens December 3</h1>
+                <p class="lead">Step into a lush world designed for the bold, the stylish, and the effortlessly cool.
+                    Neon glows through the palms, exotic scents fill the air, and every corner is crafted for the
+                    perfect vibe. This isn’t just a party — it’s an elevated escape into the jungle, wrapped in mystery,
+                    elegance, and Instagram-worthy magic. Get ready to explore, unwind, and lose yourself in the most
+                    exclusive paradise of the night.</p>
 
                 <div class="countdown" role="timer" aria-live="polite" aria-atomic="true" id="countdown">
                     <div class="unit">
@@ -351,34 +603,43 @@
                     </div>
                 </div>
 
-                <p class="small" id="target-date-note">Target: <span id="target-date-text">December 3</span></p>
+                <p class="small" id="target-date-note">Expedition Launch: <span id="target-date-text">December 3</span>
+                </p>
             </div>
 
             <aside class="right" aria-labelledby="subscribe-heading">
-                <h2 id="subscribe-heading" style="margin:0 0 .4rem">Get notified</h2>
-                <p class="small" style="margin:0 0 .6rem">Leave your email and we'll send you a heads-up when we go
-                    live.</p>
+                <h2 id="subscribe-heading">Join the Expedition</h2>
+                <p class="small" style="margin: 0 0 1.5rem">Be the first to explore. Enter your email and we'll send you
+                    exclusive early access when the adventure begins.</p>
 
                 <form class="subscribe" id="subscribe-form" novalidate>
                     <label for="email" class="visually-hidden">Email address</label>
                     <div class="input-row">
                         <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
-                            placeholder="you@domain.com" required aria-required="true">
-                        <button class="btn" type="submit">Notify me</button>
+                            placeholder="explorer@gmail.com" required aria-required="true">
+                        <button class="btn" type="submit">Join Adventure</button>
                     </div>
-                    <div id="form-msg" role="status" aria-live="polite" style="min-height:1.2em;font-size:.9rem"></div>
+                    <div id="form-msg" role="status" aria-live="polite"
+                        style="min-height: 1.2em; font-size: 0.9rem; color: #b8ffa0;"></div>
                 </form>
 
-                <div style="margin-top:1rem;font-size:.85rem;color:rgba(255,255,255,0.65)">Or follow us on
-                    <strong>Twitter</strong> for updates.</div>
+                <div style="margin-top: 1.5rem; font-size: 0.85rem; color: rgba(200, 255, 200, 0.8);">
+                    Follow the trail on <strong style="color: #b8ffa0;">Twitter</strong> for jungle updates and sneak
+                    peeks.
+                </div>
             </aside>
+            <br><br>
+            <div class="foot-note">🌿 Embrace the Jungle • Adventure Awaits • Fun First 🌿</div>
 
-            <div class="foot-note">Made with care • Minimal &amp; modern</div>
+            <!-- Decorative animal icons -->
+            <div class="animal-icon monkey">🐒</div>
+            <div class="animal-icon parrot">🦜</div>
+            <div class="animal-icon tiger">🐅</div>
         </section>
     </main>
 
     <script>
-        // --- Countdown logic ---
+
         (function () {
             const daysEl = document.getElementById('days');
             const hrsEl = document.getElementById('hours');
@@ -386,45 +647,62 @@
             const secEl = document.getElementById('seconds');
             const targetText = document.getElementById('target-date-text');
 
-
             const now = new Date();
             const currentYear = now.getFullYear();
             let targetYear = currentYear;
-            // month in JS Date is 0-indexed: 11 = December
             let target = new Date(targetYear, 11, 3, 0, 0, 0);
+
             if (now >= target) {
                 targetYear = currentYear + 1;
                 target = new Date(targetYear, 11, 3, 0, 0, 0);
             }
 
-            function pad(n) { return String(n).padStart(2, '0') }
+            function pad(n) { return String(n).padStart(2, '0'); }
+
             function updateCountdown() {
-                const t = new Date() - target;
                 const diff = target - new Date();
+
                 if (diff <= 0) {
-                    daysEl.textContent = '00'; hrsEl.textContent = '00'; minEl.textContent = '00'; secEl.textContent = '00';
+                    daysEl.textContent = '00';
+                    hrsEl.textContent = '00';
+                    minEl.textContent = '00';
+                    secEl.textContent = '00';
                     document.getElementById('countdown').setAttribute('aria-hidden', 'true');
-                    document.getElementById('target-date-note').textContent = 'We are live!';
+                    document.getElementById('target-date-note').innerHTML = '<span style="color:#b8ffa0;">🚀 The Expedition Has Begun!</span>';
                     clearInterval(timer);
                     return;
                 }
+
                 let s = Math.floor(diff / 1000);
-                const days = Math.floor(s / 86400); s -= days * 86400;
-                const hours = Math.floor(s / 3600); s -= hours * 3600;
-                const mins = Math.floor(s / 60); s -= mins * 60;
+                const days = Math.floor(s / 86400);
+                s -= days * 86400;
+                const hours = Math.floor(s / 3600);
+                s -= hours * 3600;
+                const mins = Math.floor(s / 60);
+                s -= mins * 60;
                 const secs = s;
+
                 daysEl.textContent = pad(days);
                 hrsEl.textContent = pad(hours);
                 minEl.textContent = pad(mins);
                 secEl.textContent = pad(secs);
+
+                // Add pulsing animation to seconds
+                if (secEl.style.animation) {
+                    secEl.style.animation = 'none';
+                    void secEl.offsetWidth;
+                }
+                secEl.style.animation = 'pulse 1s ease';
             }
 
-
-            targetText.textContent = target.toLocaleString(undefined, { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            targetText.textContent = target.toLocaleString(undefined, {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
 
             updateCountdown();
             const timer = setInterval(updateCountdown, 1000);
-
         })();
 
 
@@ -434,45 +712,89 @@
             const msg = document.getElementById('form-msg');
 
             function validEmail(e) {
-
-                return /\S+@\S+\.\S+/.test(e);
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
             }
 
             form.addEventListener('submit', function (ev) {
                 ev.preventDefault();
                 const val = email.value.trim();
                 msg.textContent = '';
+
                 if (!val) {
-                    msg.style.color = 'rgb(255,210,210)';
-                    msg.textContent = 'Please enter your email.';
+                    msg.style.color = '#ff6b6b';
+                    msg.textContent = 'Please enter your email address.';
                     email.focus();
                     return;
                 }
+
                 if (!validEmail(val)) {
-                    msg.style.color = 'rgb(255,210,210)';
+                    msg.style.color = '#ff6b6b';
                     msg.textContent = 'Please provide a valid email address.';
                     email.focus();
                     return;
                 }
 
-                msg.style.color = 'white';
-                msg.textContent = 'Thanks — you\'re on the list!';
+
+                msg.style.color = '#b8ffa0';
+                msg.textContent = '🎉 Welcome to the expedition! Check your email for jungle updates.';
+                email.style.borderColor = 'hsl(120, 70%, 40%)';
                 form.reset();
 
 
+                try {
+                    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-jungle-birds-chirping-123.mp3');
+                    audio.volume = 0.3;
+                    audio.play();
+                } catch (e) {
+                    console.log('Jungle sounds ready!');
+                }
             });
 
-        })();
-
-
-        (function () {
+            // Add pulse animation
             const style = document.createElement('style');
             style.textContent = `
-        .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+        }
       `;
             document.head.appendChild(style);
         })();
 
+
+        document.addEventListener('click', function (e) {
+            const leaf = document.createElement('div');
+            leaf.innerHTML = '🍃';
+            leaf.style.cssText = `
+        position: fixed;
+        left: ${e.clientX}px;
+        top: ${e.clientY}px;
+        font-size: 20px;
+        pointer-events: none;
+        z-index: 1000;
+        animation: floatAway 1s ease-out forwards;
+      `;
+
+            document.body.appendChild(leaf);
+
+            setTimeout(() => leaf.remove(), 1000);
+        });
+
+
+        const floatStyle = document.createElement('style');
+        floatStyle.textContent = `
+      @keyframes floatAway {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(${Math.random() * 100 - 50}px, -100px) rotate(180deg);
+          opacity: 0;
+        }
+      }
+    `;
+        document.head.appendChild(floatStyle);
     </script>
 </body>
 
