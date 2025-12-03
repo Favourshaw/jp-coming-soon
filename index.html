@@ -220,7 +220,7 @@
             overflow: hidden;
         }
 
-        /* Jungle vine border effect */
+
         .card::before {
             content: "";
             position: absolute;
@@ -519,7 +519,7 @@
             white-space: nowrap;
         }
 
-        /* Decorative animal icons */
+
         .animal-icon {
             position: absolute;
             font-size: 32px;
@@ -548,7 +548,7 @@
 
     <div class="bg-video-wrap" aria-hidden="true">
         <video autoplay muted loop playsinline>
-            <source src="https://www.pexels.com/download/video/2022395/" type="video/mp4">
+            <source src="assets/bg.mp4" type="video/mp4">
         </video>
     </div>
 
@@ -564,7 +564,7 @@
     </div>
 
     <main class="container" role="main">
-        <!-- Logo Area - Now properly aligned -->
+
         <div class="logo-container">
             <div class="logo-wrapper">
                 <img src="assets/logo.png" alt="Jungle Paradise Logo" class="logo-img" />
@@ -577,7 +577,7 @@
 
         <section class="card" aria-labelledby="coming-soon-heading">
             <div class="left">
-                <h1 id="coming-soon-heading">The Jungle Awakens December 3</h1>
+                <h1 id="coming-soon-heading">The Jungle Awakens December 20</h1>
                 <p class="lead">Step into a lush world designed for the bold, the stylish, and the effortlessly cool.
                     Neon glows through the palms, exotic scents fill the air, and every corner is crafted for the
                     perfect vibe. This isn’t just a party — it’s an elevated escape into the jungle, wrapped in mystery,
@@ -624,14 +624,17 @@
                 </form>
 
                 <div style="margin-top: 1.5rem; font-size: 0.85rem; color: rgba(200, 255, 200, 0.8);">
-                    Follow the trail on <strong style="color: #b8ffa0;">Twitter</strong> for jungle updates and sneak
-                    peeks.
+                    Follow the trail on <strong><a style="color: #b8ffa0;"
+                            href="https://www.tiktok.com/@thejungleparadise">TikTok</a></strong> and <strong><a
+                            style="color: #b8ffa0;"
+                            href="https://www.instagram.com/the_jungleparadise">Instagram</a></strong> for jungle
+                    updates and sneak peeks.
                 </div>
             </aside>
             <br><br>
             <div class="foot-note">🌿 Embrace the Jungle • Adventure Awaits • Fun First 🌿</div>
 
-            <!-- Decorative animal icons -->
+
             <div class="animal-icon monkey">🐒</div>
             <div class="animal-icon parrot">🦜</div>
             <div class="animal-icon tiger">🐅</div>
@@ -650,11 +653,11 @@
             const now = new Date();
             const currentYear = now.getFullYear();
             let targetYear = currentYear;
-            let target = new Date(targetYear, 11, 3, 0, 0, 0);
+            let target = new Date(targetYear, 11, 20, 0, 0, 0);
 
             if (now >= target) {
                 targetYear = currentYear + 1;
-                target = new Date(targetYear, 11, 3, 0, 0, 0);
+                target = new Date(targetYear, 11, 20, 0, 0, 0);
             }
 
             function pad(n) { return String(n).padStart(2, '0'); }
@@ -706,95 +709,255 @@
         })();
 
 
-        (function () {
-            const form = document.getElementById('subscribe-form');
-            const email = document.getElementById('email');
-            const msg = document.getElementById('form-msg');
+        document.getElementById('subscribe-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-            function validEmail(e) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+            const form = e.target;
+            const emailInput = document.getElementById('email');
+            const messageDiv = document.getElementById('form-msg');
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+
+            messageDiv.textContent = '';
+            messageDiv.style.color = '#b8ffa0';
+
+
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !emailRegex.test(email)) {
+                messageDiv.textContent = 'Please enter a valid email address';
+                messageDiv.style.color = '#ff6b6b';
+                emailInput.focus();
+                return;
             }
 
-            form.addEventListener('submit', function (ev) {
-                ev.preventDefault();
-                const val = email.value.trim();
-                msg.textContent = '';
 
-                if (!val) {
-                    msg.style.color = '#ff6b6b';
-                    msg.textContent = 'Please enter your email address.';
-                    email.focus();
-                    return;
-                }
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            emailInput.disabled = true;
 
-                if (!validEmail(val)) {
-                    msg.style.color = '#ff6b6b';
-                    msg.textContent = 'Please provide a valid email address.';
-                    email.focus();
-                    return;
-                }
+            try {
+                // Send data
+                const formData = new FormData();
+                formData.append('email', email);
 
+                console.log('Submitting email:', email); // Debug
 
-                msg.style.color = '#b8ffa0';
-                msg.textContent = '🎉 Welcome to the expedition! Check your email for jungle updates.';
-                email.style.borderColor = 'hsl(120, 70%, 40%)';
-                form.reset();
+                const response = await fetch('sender.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('Response status:', response.status); // Debug
 
 
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+
+                let data;
                 try {
-                    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-jungle-birds-chirping-123.mp3');
-                    audio.volume = 0.3;
-                    audio.play();
-                } catch (e) {
-                    console.log('Jungle sounds ready!');
-                }
-            });
+                    data = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error('JSON parse error:', parseError);
 
-            // Add pulse animation
-            const style = document.createElement('style');
-            style.textContent = `
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.1); }
+                    if (responseText.includes('already') || responseText.includes('duplicate')) {
+                        messageDiv.textContent = '🎉 Successfully subscribed! Thank you for joining the adventure!';
+                        messageDiv.style.color = '#ffcc00';
+                    } else {
+                        throw new Error('Invalid server response');
+                    }
+                    return;
+                }
+
+
+                if (data.success) {
+
+                    messageDiv.textContent = data.message || '🎉 Successfully subscribed! Thank you.';
+                    messageDiv.style.color = '#b8ffa0';
+                    form.reset();
+
+
+                    emailInput.style.borderColor = '#b8ffa0';
+                    setTimeout(() => {
+                        emailInput.style.borderColor = '';
+                    }, 2000);
+
+
+                    showSuccessEffect();
+
+                } else if (data.error) {
+
+                    messageDiv.textContent = data.error;
+
+
+                    if (data.error.toLowerCase().includes('already') ||
+                        data.error.toLowerCase().includes('duplicate') ||
+                        data.error.toLowerCase().includes('subscribed')) {
+                        messageDiv.style.color = '#ffcc00';
+                        messageDiv.innerHTML = '✅ ' + data.error + ' - You\'re already on the list!';
+                    } else {
+                        messageDiv.style.color = '#ff6b6b';
+                    }
+
+                    emailInput.focus();
+                } else {
+
+                    messageDiv.textContent = 'Subscription failed. Please try again.';
+                    messageDiv.style.color = '#ff6b6b';
+                }
+
+            } catch (error) {
+                console.error('Full error details:', error);
+
+
+                if (error.name === 'TypeError') {
+                    if (error.message.includes('Failed to fetch')) {
+                        messageDiv.textContent = '🌐 Cannot connect to server. Please check your internet connection.';
+                    } else {
+                        messageDiv.textContent = '⚠️ Browser error: ' + error.message;
+                    }
+                } else if (error.message.includes('Invalid server response')) {
+                    messageDiv.textContent = '⚠️ Server response format error.';
+                } else {
+                    messageDiv.textContent = '❌ Error: ' + error.message;
+                }
+                messageDiv.style.color = '#ff6b6b';
+
+            } finally {
+
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                emailInput.disabled = false;
+            }
+        });
+
+
+        function showSuccessEffect() {
+            try {
+
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        const leaf = document.createElement('div');
+                        leaf.innerHTML = '🍃';
+                        leaf.style.cssText = `
+                        position: fixed;
+                        left: ${Math.random() * 100}vw;
+                        top: -30px;
+                        font-size: 24px;
+                        pointer-events: none;
+                        z-index: 9999;
+                        animation: successFloat 2s ease-out forwards;
+                    `;
+                        document.body.appendChild(leaf);
+                        setTimeout(() => leaf.remove(), 2000);
+                    }, i * 150);
+                }
+
+
+                if (!document.querySelector('#success-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'success-style';
+                    style.textContent = `
+                    @keyframes successFloat {
+                        0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+                        100% { transform: translate(${Math.random() * 60 - 30}px, 80vh) rotate(360deg); opacity: 0; }
+                    }
+                `;
+                    document.head.appendChild(style);
+                }
+            } catch (e) {
+
+            }
         }
-      `;
-            document.head.appendChild(style);
-        })();
 
 
         document.addEventListener('click', function (e) {
+            if (e.target.closest('form') || e.target.type === 'submit' || e.target.type === 'email') {
+                return;
+            }
+
             const leaf = document.createElement('div');
             leaf.innerHTML = '🍃';
             leaf.style.cssText = `
-        position: fixed;
-        left: ${e.clientX}px;
-        top: ${e.clientY}px;
-        font-size: 20px;
-        pointer-events: none;
-        z-index: 1000;
-        animation: floatAway 1s ease-out forwards;
-      `;
+            position: fixed;
+            left: ${e.clientX}px;
+            top: ${e.clientY}px;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: floatAway 1s ease-out forwards;
+        `;
 
             document.body.appendChild(leaf);
 
-            setTimeout(() => leaf.remove(), 1000);
+            setTimeout(() => {
+                if (leaf.parentNode) {
+                    leaf.remove();
+                }
+            }, 1000);
         });
 
 
         const floatStyle = document.createElement('style');
         floatStyle.textContent = `
-      @keyframes floatAway {
-        0% {
-          transform: translate(0, 0) rotate(0deg);
-          opacity: 1;
+        @keyframes floatAway {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(${Math.random() * 100 - 50}px, -100px) rotate(180deg);
+                opacity: 0;
+            }
         }
-        100% {
-          transform: translate(${Math.random() * 100 - 50}px, -100px) rotate(180deg);
-          opacity: 0;
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
-      }
+        
+        #form-msg {
+            transition: all 0.3s ease;
+            min-height: 1.2em;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        #form-msg:empty {
+            display: none;
+        }
     `;
         document.head.appendChild(floatStyle);
+
+
+        const emailInput = document.getElementById('email');
+        if (emailInput) {
+            emailInput.addEventListener('input', function () {
+                const messageDiv = document.getElementById('form-msg');
+                if (this.validity.valid && messageDiv.textContent.includes('valid email')) {
+                    messageDiv.textContent = '';
+                }
+            });
+
+            emailInput.addEventListener('blur', function () {
+                if (this.value && !this.validity.valid) {
+                    const messageDiv = document.getElementById('form-msg');
+                    messageDiv.textContent = 'Please enter a valid email address';
+                    messageDiv.style.color = '#ff6b6b';
+                }
+            });
+        }
+
+
+        console.log('Testing sender.php...');
+        fetch('sender.php')
+            .then(response => console.log('sender.php status:', response.status))
+            .catch(error => console.error('sender.php fetch error:', error));
     </script>
 </body>
 
